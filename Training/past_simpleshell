@@ -1,0 +1,17 @@
+        int exe = 0;
+        char *command = NULL;
+        size_t len = 0;
+        size_t command_length = 0;
+
+        while(1)
+        {
+        printer("simple_shell$ ");
+                if ((getline(&command, &len, stdin)) == -1)
+                        break;
+        command_length = _strlen(command);
+        if (command_length > 0 && command[command_length - 1] == '\n')
+                        {
+                        command[command_length - 1] = '\0';
+                        }
+        parser(command);
+	}

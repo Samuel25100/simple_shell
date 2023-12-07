@@ -1,0 +1,83 @@
+#include "shell.h"
+char **add_command(char **str, char *token);
+/**
+ * get_path - recive tokenized "PATH" and check path exist and return it
+ * @token: the string to contacenate on path
+ * Return: existed and executable file path
+ */
+char *get_path(char *token)
+{
+	int x, y;
+	char *path = NULL, *fin_result = NULL;
+	char **tok_path, **tok_copy;
+
+	path = getenv("PATH");
+	if (path == NULL)
+	{
+	perror("Error in getenv");
+	}
+	tok_path = parser(path, ":");
+	tok_copy = add_command(tok_path, token);
+	for (y = 0; tok_path[y]; y++)
+		{
+		free(tok_path[y]);
+		}
+	free(tok_path);
+	for (x = 0; tok_copy[x]; x++)
+	{
+	/*checker of file*/
+	if (access(tok_copy[x], F_OK | R_OK) == 0)
+	{
+		fin_result = malloc(_strlen(tok_copy[x]) + 1);
+		strcpy(fin_result, tok_copy[x]);
+		for (y = 0; tok_copy[y]; y++)
+		{
+		free(tok_copy[y]);
+		}
+		free(tok_copy);
+		return (fin_result);
+	}
+	}
+	for (y = 0; tok_copy[y]; y++)
+	{
+	free(tok_copy[y]);
+	}
+	free(tok_copy);
+	return (NULL);
+}
+/**
+ * add_command - add inserted command to the each pathes
+ * @str: the array of pointers to each pathes
+ * Return: added array of pointer
+ */
+char **add_command(char **str, char *token)
+{
+	int x, len1, len0;
+	char **result;
+
+	while (str[len0])
+		len0++;
+	result = malloc(sizeof(char *) * (len0 + 1));
+	if (result == NULL)
+	{
+	perror("Malloc error");
+	exit(97);
+	}
+	for (x = 0; str[x]; x++)
+	{
+	len1 = _strlen(str[x]) + _strlen(token);
+	result[x] = (char *)malloc(len1 + 2);
+	if (result[x] == NULL)
+		{
+		perror("Malloc Error");
+		exit(97);
+		}
+	strcpy(result[x], str[x]);
+	strcat(result[x], "/");
+	strcat(result[x], token);
+	printf("ulti path: %s\n", result[x]);
+	fflush(stdin);
+	}
+	result[len0] = NULL;
+	return (result);
+}
