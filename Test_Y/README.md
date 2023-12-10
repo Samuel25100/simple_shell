@@ -1,5 +1,5 @@
-hella_shell
-hella shell
+simple_shell
+simple shell
 
 Table of Contents
 Description
@@ -12,7 +12,7 @@ Bugs
 Authors
 License
 Description
-hella_shell is a simple command line interpreter based on the first Unix shell 'sh', created by Ken Thompson in 1971. hella_shell is intentionally minimalistic and contains functionality for only the most basic shell tasks - accepting input, parsing the input into a command and its arguments, and executing that input. Error checking is simple and follows Bash conventions.
+simple_shell is a simple command line interpreter based on the first Unix shell 'sh', created by Ken Thompson in 1971. simple_shell is intentionally minimalistic and contains functionality for only the most basic shell tasks - accepting input, parsing the input into a command and its arguments, and executing that input. Error checking is simple and follows Bash conventions.
 
 Purpose
 The purpose of the simple shell project is to understand:
@@ -82,8 +82,3 @@ got me feelin' hella shell so let's just keep on codin'
 Bugs
 At this time, there are no known bugs.
 
-Authors
-Lizzie Turner | GitHub | Twitter Omar Contreras | GitHub | Twitter
-
-License
-hella_shell is open source and free to download and use
