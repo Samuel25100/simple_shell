@@ -27,4 +27,5 @@ int _strcmp(char *s1, char *s2);
 char *add_command(char *path, char *token);
 void my_env(char **env); /*condition*/
 void my_exit(void); /*condition*/
+void print_error(char *tokenized[MAX_ARGS], char *err);
 #endif

@@ -13,7 +13,7 @@ void executer(char *tokenized[MAX_ARGS])
 	ab_path = get_path(tokenized[0]);
 	if (ab_path == NULL)
 	{
-	perror("File Not found");
+	print_error(tokenized, "File Not found");
 	}
 	else
 	{
@@ -29,7 +29,7 @@ void executer(char *tokenized[MAX_ARGS])
 	wait(NULL);
 	free(ab_path);
 	}
-	else
+	else if (pid < 0)
 	{
 	perror("Error in fork");
 	}
