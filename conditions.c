@@ -1,17 +1,17 @@
 #include "shell.h"
 /**
  * conditions - check many conditions before calling executer
- * @command: tokenized command or user input
+ * @tokenized: tokenized command or user input
  * Return: 1 if there is no conditions, if any 0
  */
-int conditions(char *tokenized[MAX_ARGS])
+int conditions(char *tokenized[MAX_ARGS], char **env)
 {
-	if (_strcmp(tokenized[0],"env") == 0)
+	if (_strcmp(tokenized[0], "env") == 0)
 	{
-	my_env();
+	my_env(env);
 	return (0);
 	}
-	else if (_strcmp(tokenized[0],"cd") == 0)
+	else if (_strcmp(tokenized[0], "cd") == 0)
 	{
 	/*my_exit();*/
 	return (0);
@@ -22,18 +22,20 @@ int conditions(char *tokenized[MAX_ARGS])
  * my_env - print all enviroments
  * Return: void
  */
-void my_env(void)
+void my_env(char **env)
 {
-	extern char **environ;
 	int x = 0;
 
-	while (*(environ + x) != NULL)
+	while (env[x] != NULL)
 	{
-	printer(*(environ + x));
+	printer(env[x]);
 	x++;
 	}
-	_putchar('\n');
 }
+/**
+ * my_exit - exit the program when exit command passed
+ * Return: void
+ */
 void my_exit(void)
 {
 	printer("Exiting succeed");

@@ -3,12 +3,14 @@
  * main - print "simple_shell$ " and wait for command
  * Return: 0 success
  */
-int main(void)
+int main(int ac, char **av, char **env)
 {
-	char *command = NULL;
+	char *command;
 	size_t len = 0, command_length = 0;
 	char *tokenized[MAX_ARGS];
 
+	(void)ac;
+	(void)av;
 	while (1)
 	{
 	printer("hell($) ");
@@ -23,15 +25,15 @@ int main(void)
 	{
 	command[command_length - 1] = '\0';
 	}
-	parser(command, tokenized," ");
+	parser(command, tokenized, " ");
 	/*Check for EOF*/
-	if (feof(stdin) || (_strcmp(tokenized[0],"exit") == 0))
+	if (feof(stdin) || (_strcmp(tokenized[0], "exit") == 0))
 	{
 	free(command);
 	my_exit();
 	}
 	/*execute command*/
-	if ((conditions(tokenized)) != 0)
+	if ((conditions(tokenized, env)) != 0)
 		executer(tokenized);
 	}
 	free(command);
