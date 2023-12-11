@@ -4,7 +4,7 @@
  * @tokenized: the tokenized array of arguments
  * Return: -1 on error and 0 on success
  */
-void executer(char **tokenized)
+void executer(char *tokenized[MAX_ARGS])
 {
 	pid_t pid = 0;
 	char *ab_path = NULL;

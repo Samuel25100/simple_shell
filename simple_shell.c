@@ -7,11 +7,11 @@ int main(void)
 {
 	char *command = NULL;
 	size_t len = 0, command_length = 0;
-	char **tokenized = NULL;
+	char *tokenized[MAX_ARGS];
 
 	while (1)
 	{
-	printer("simple_shell$ ");
+	printer("hell($) ");
 	/*get argument from stdin to command*/
 	if (getline(&command, &len, stdin) == -1)
 	{
@@ -23,15 +23,17 @@ int main(void)
 	{
 	command[command_length - 1] = '\0';
 	}
-	tokenized = malloc(sizeof(char *) * 1024);
-	tokenized = parser(command, " \n");
-	/*execute command*/
-	executer(tokenized);
-	if (feof(stdin))
+	parser(command, tokenized," ");
+	/*Check for EOF*/
+	if (feof(stdin) || (_strcmp(tokenized[0],"exit") == 0))
 	{
-	free(tokenized);
-	exit(1);
+	free(command);
+	my_exit();
 	}
+	/*execute command*/
+	if ((conditions(tokenized)) != 0)
+		executer(tokenized);
 	}
+	free(command);
 	return (0);
 }

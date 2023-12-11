@@ -24,6 +24,5 @@ char *_strcpy(char *dest, char *src);
 int conditions(char **command);
 int _strcmp(char *s1, char *s2);
 char *add_command(char *path, char *token);
-void my_env(void); /*condition*/
-void my_exit(void); /*condition*/
+void my_env(void);
 #endif

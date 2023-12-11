@@ -52,9 +52,9 @@ char *add_command(char *path, char *file)
 		perror("Malloc Error");
 		exit(97);
 		}
-	strcpy(result, token);
-	strcat(result, "/");
-	strcat(result, file);
+	_strcpy(result, token);
+	_strcat(result, "/");
+	_strcat(result, file);
 		if ((stat(result, &file_loc) == 0) && (access(result, F_OK | X_OK) == 0))
 		{
 		free(path_c);

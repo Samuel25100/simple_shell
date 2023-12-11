@@ -5,19 +5,17 @@
  * @delim: delimeter to parsing or tokenizing
  * Return: 0 success
  */
-char **parser(char *command, char *delim)
+void parser(char *command, char *args[MAX_ARGS], char *delim)
 {
 	char *token = NULL;
-	char **argv = NULL;
 	int argc = 0;
 
 	token = strtok(command, delim);
 	while (token != NULL)
 	{
-	argv = realloc(argv, (argc + 2) * sizeof(char *));
-	argv[argc] = _strdup(token);
-	argv[++argc] = NULL;
+	args[argc] = _strdup(token);
 	token = strtok(NULL, delim);
+	argc++;
 	}
-	return (argv);
+	args[argc] = NULL;
 }
