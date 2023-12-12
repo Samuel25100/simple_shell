@@ -1,5 +1,5 @@
 #include "shell.h"
-char *add_command(char *path, char *token);
+void free_result(char **result);
 /**
  * get_path - recive tokenized "PATH" and check path exist and return it
  * @file: the string to contacenate on path or file name
@@ -19,9 +19,13 @@ char *get_path(char *file)
 	{
 	perror("Error in getenv");
 	}
+	path = _strdup(path);
 	tok_copy = add_command(path, file);
+	free(path);
 	if (tok_copy != NULL)
-		return (tok_copy);
+	{
+	return (tok_copy);
+	}
 	return (NULL);
 }
 /**
@@ -33,39 +37,55 @@ char *get_path(char *file)
  */
 char *add_command(char *path, char *file)
 {
-	struct stat file_loc;
-	char *result = NULL, *path_c = NULL;
-	char *token = NULL;
+	int x = 0;
+	char **result = NULL, *path_c = NULL;
+	char *token = NULL, *result_c = NULL;
 
-	path_c = strdup(path);
+	path_c = _strdup(path);
 	token = strtok(path_c, ":");
+	result = malloc(sizeof(char *) * 25);
+	if (result == NULL)
+	{
+	perror("Malloc Error");
+	exit(97);
+	}
 	while (token)
 	{
-		if (result)
-		{
-		free(result);
-		result = NULL;
-		}
-	result = malloc(_strlen(token) + _strlen(file));
-		if (result == NULL)
+	result[x] = malloc(_strlen(token) + _strlen(file) + 2);
+		if (result[x] == NULL)
 		{
 		perror("Malloc Error");
 		exit(97);
 		}
-	_strcpy(result, token);
-	_strcat(result, "/");
-	_strcat(result, file);
-		if ((stat(result, &file_loc) == 0) && (access(result, F_OK | X_OK) == 0))
+	_strcpy(result[x], token);
+	_strcat(result[x], "/");
+	_strcat(result[x], file);
+	token = strtok(NULL, ":");
+		if ((access(result[x], F_OK | X_OK) == 0))
 		{
 		free(path_c);
-		return (result);
+		result_c = _strdup(result[x]);
+		free_result(result);
+		return (result_c);
 		}
-		token = strtok(NULL, ":");
+	x++;
 	}
 	free(path_c);
-	if (result)
-	{
-	free(result);
-	}
+	free_result(result);
 	return (NULL);
+}
+/**
+ * free_result - free the pointer result
+ * @result: is the pointer
+ * Return: void
+ */
+void free_result(char **result)
+{
+	int x = 0;
+
+	for (x = 0; result[x]; x++)
+	{
+	free(result[x]);
+	}
+	free(result);
 }

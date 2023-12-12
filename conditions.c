@@ -2,6 +2,7 @@
 /**
  * conditions - check many conditions before calling executer
  * @tokenized: tokenized command or user input
+ * @env: array of each enviroment
  * Return: 1 if there is no conditions, if any 0
  */
 int conditions(char *tokenized[MAX_ARGS], char **env)
@@ -20,6 +21,7 @@ int conditions(char *tokenized[MAX_ARGS], char **env)
 }
 /**
  * my_env - print all enviroments
+ * @env: array of each enviroment
  * Return: void
  */
 void my_env(char **env)
@@ -31,14 +33,4 @@ void my_env(char **env)
 	printer(env[x]);
 	x++;
 	}
-}
-/**
- * my_exit - exit the program when exit command passed
- * Return: void
- */
-void my_exit(void)
-{
-	printer("Exiting succeed");
-	_putchar('\n');
-	exit(1);
 }

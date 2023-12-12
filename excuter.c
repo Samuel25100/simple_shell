@@ -31,6 +31,6 @@ void executer(char *tokenized[MAX_ARGS])
 	}
 	else if (pid < 0)
 	{
-	perror("Error in fork");
+	print_error(tokenized, "Error in fork");
 	}
 }
