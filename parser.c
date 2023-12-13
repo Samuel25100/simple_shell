@@ -11,11 +11,11 @@ int parser(char *command, char **args, char *delim)
 	char *token = NULL;
 	int argc = 0;
 
-	token = strtok(command, delim);
+	token = _strtok(command, delim);
 	while (token != NULL)
 	{
 	args[argc] = _strdup(token);
-	token = strtok(NULL, delim);
+	token = _strtok(NULL, delim);
 	argc++;
 	}
 	args[argc] = NULL;

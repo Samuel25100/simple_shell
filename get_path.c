@@ -7,7 +7,7 @@ void free_result(char **result);
  */
 char *get_path(char *file)
 {
-	char *path = NULL;
+	char *path = NULL, *path_c = NULL;
 	char *tok_copy = NULL;
 
 	path = getenv("PATH");
@@ -15,9 +15,9 @@ char *get_path(char *file)
 	{
 	perror("Error in getenv");
 	}
-	path = _strdup(path);
-	tok_copy = add_command(path, file);
-	free(path);
+	path_c = _strdup(path);
+	tok_copy = add_command(path_c, file);
+	free(path_c);
 	if (tok_copy != NULL)
 	{
 	return (tok_copy);
@@ -38,13 +38,14 @@ char *add_command(char *path, char *file)
 	char *token = NULL, *result_c = NULL;
 
 	path_c = _strdup(path);
-	token = strtok(path_c, ":");
+	token = _strtok(path_c, ":");
 	result = malloc(sizeof(char *) * 25);
 	if (result == NULL)
 	{
 	perror("Malloc Error");
 	exit(97);
 	}
+
 	while (token)
 	{
 	result[x] = malloc(_strlen(token) + _strlen(file) + 2);
@@ -59,7 +60,7 @@ char *add_command(char *path, char *file)
 	_strcat(result[x], "/");
 	_strcat(result[x], file);
 	}
-	token = strtok(NULL, ":");
+	token = _strtok(NULL, ":");
 		if ((access(result[x], F_OK | X_OK) == 0))
 		{
 		free(path_c);
@@ -85,6 +86,8 @@ void free_result(char **result)
 	for (x = 0; result[x]; x++)
 	{
 	free(result[x]);
+	result[x] = NULL;
 	}
 	free(result);
+	result = NULL;
 }
