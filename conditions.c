@@ -31,6 +31,7 @@ void my_env(char **env)
 	while (env[x] != NULL)
 	{
 	printer(env[x]);
+	_putchar('\n');
 	x++;
 	}
 }
