@@ -15,6 +15,7 @@ void print_error(char *tokenized[MAX_ARGS], char *err)
 	}
 	printer(getenv("_"));
 	printer(": ");
+	count = count - 1;
 	_putchar(count + '0');
 	printer(": ");
 	printer(tokenized[0]);

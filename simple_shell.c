@@ -71,7 +71,5 @@ void _free_tok(char *tokenized[MAX_ARGS], int MAX)
  */
 void my_exit(void)
 {
-	printer("Exiting succeed");
-	_putchar('\n');
 	exit(1);
 }
