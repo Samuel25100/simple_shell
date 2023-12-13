@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * _getline - Read a line of input from the user
+ *
+ * Return: Pointer to the input line, or NULL on failure
+ */
+
 char *_getline() {
     char *line = NULL;
     size_t line_size = 0;
@@ -29,6 +35,12 @@ char *_getline() {
 
     return line;
 }
+
+/**
+ * main - Entry point
+ *
+ * Return: Always 0
+ */
 
 int main() {
     printf("Enter a line: ");
