@@ -8,9 +8,16 @@ void executer(char *tokenized[MAX_ARGS])
 {
 	pid_t pid = 0;
 	char *ab_path = NULL;
+	int bin = 0;
 
 	/*path is checked if it exist and executable by get_path, else return NULL*/
-	ab_path = get_path(tokenized[0]);
+	if (tokenized[0][0] == '/')
+	{
+		ab_path = tokenized[0];
+		bin = 1;
+	}
+	else
+		ab_path = get_path(tokenized[0]);
 	if (ab_path == NULL)
 	{
 	print_error(tokenized, "File Not found");
@@ -27,7 +34,8 @@ void executer(char *tokenized[MAX_ARGS])
 	else if (pid > 0)
 	{
 	wait(NULL);
-	free(ab_path);
+	if (bin == 0)
+		free(ab_path);
 	}
 	else if (pid < 0)
 	{

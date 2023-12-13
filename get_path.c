@@ -10,10 +10,6 @@ char *get_path(char *file)
 	char *path = NULL;
 	char *tok_copy = NULL;
 
-	if (file[0] == '/')
-	{
-	return (file);
-	}
 	path = getenv("PATH");
 	if (path == NULL)
 	{
