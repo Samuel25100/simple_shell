@@ -10,7 +10,7 @@ void _free_tok(char *tokenized[MAX_ARGS], int MAX);
 int main(int ac, char **av, char **env)
 {
 	char *command = NULL;
-	int MAX = 0;
+	int MAX = 0, status = 0;
 	size_t len = 0, command_length = 0;
 	char *tokenized[MAX_ARGS] = {NULL};
 
@@ -25,7 +25,7 @@ int main(int ac, char **av, char **env)
 		free(command);
 		if (MAX != 0)
 			_free_tok(tokenized, MAX);
-		my_exit();
+		exit(-1);
 	}
 	/*tokenize arguments*/
 	command_length = _strlen(command);
@@ -37,9 +37,10 @@ int main(int ac, char **av, char **env)
 	/*Check for EOF*/
 	if (feof(stdin) || (_strcmp(tokenized[0], "exit") == 0))
 	{
+	status = _atoi(tokenized[1]);
 	free(command);
 	_free_tok(tokenized, MAX);
-	my_exit();
+	my_exit(status);
 	}
 	/*execute command*/
 	if ((conditions(tokenized, env)) != 0)
@@ -67,9 +68,10 @@ void _free_tok(char *tokenized[MAX_ARGS], int MAX)
 }
 /**
  * my_exit - exit the program when exit command passed
+ * @status: is the status of the program when it exit
  * Return: void
  */
-void my_exit(void)
+void my_exit(int status)
 {
-	exit(1);
+	exit(status);
 }
