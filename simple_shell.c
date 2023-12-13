@@ -23,7 +23,7 @@ int main(int ac, char **av, char **env)
 	if (getline(&command, &len, stdin) == -1)
 	{
 		free(command);
-		if (MAX != 0)
+		if (MAX > 0)
 			_free_tok(tokenized, MAX);
 		exit(-1);
 	}
@@ -37,7 +37,8 @@ int main(int ac, char **av, char **env)
 	/*Check for EOF*/
 	if (feof(stdin) || (_strcmp(tokenized[0], "exit") == 0))
 	{
-	status = _atoi(tokenized[1]);
+	if (MAX >= 2)
+		status = _atoi(tokenized[1]);
 	free(command);
 	_free_tok(tokenized, MAX);
 	my_exit(status);
