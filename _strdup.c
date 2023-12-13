@@ -10,20 +10,24 @@ char *_strdup(char *str)
 	int x = 0;
 	size_t len = 0;
 
-	len = _strlen(str);
 	if (str == NULL)
 	{
 	return (NULL);
 	}
+
+	len = _strlen(str);
+
 	dup = malloc(sizeof(char) * (len + 1));
 	if (dup == NULL)
 	{
 	perror("Memory allocation for _strdup failer");
 	exit(1);
 	}
-	for (x = 0; *(str + x); x++)
+
+	for (x = 0; str[x]; x++)
 	{
-	*(dup + x) = *(str + x);
+	dup[x] = str[x];
 	}
+	dup[x] = '\0';
 	return (dup);
 }

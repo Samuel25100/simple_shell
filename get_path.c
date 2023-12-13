@@ -34,7 +34,7 @@ char *get_path(char *file)
 char *add_command(char *path, char *file)
 {
 	int x = 0;
-	char **result = NULL, *path_c = NULL;
+	char **result = {NULL}, *path_c = NULL;
 	char *token = NULL, *result_c = NULL;
 
 	path_c = _strdup(path);
@@ -53,9 +53,12 @@ char *add_command(char *path, char *file)
 		perror("Malloc Error");
 		exit(97);
 		}
+	if (result[x] != NULL)
+	{
 	_strcpy(result[x], token);
 	_strcat(result[x], "/");
 	_strcat(result[x], file);
+	}
 	token = strtok(NULL, ":");
 		if ((access(result[x], F_OK | X_OK) == 0))
 		{

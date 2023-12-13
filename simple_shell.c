@@ -1,5 +1,4 @@
 #include "shell.h"
-void _free_tok(char *tokenized[MAX_ARGS], int MAX);
 /**
  * main - print "simple_shell$ " and wait for command
  * @ac: num of argument
@@ -11,8 +10,8 @@ int main(int ac, char **av, char **env)
 {
 	char *command = NULL;
 	int MAX = 0, status = 0;
-	size_t len = 0, command_length = 0;
-	char *tokenized[MAX_ARGS] = {NULL};
+	size_t len = 0;
+	char **tokenized = {NULL};
 
 	(void)ac;
 	(void)av;
@@ -23,19 +22,17 @@ int main(int ac, char **av, char **env)
 	if (getline(&command, &len, stdin) == -1)
 	{
 		free(command);
-		if (MAX > 0)
-			_free_tok(tokenized, MAX);
-		exit(-1);
+		_putchar('\n');
+		exit(0);
 	}
 	/*tokenize arguments*/
-	command_length = _strlen(command);
-	if (command_length > 0 && command[command_length - 1] == '\n')
-	{
-	command[command_length - 1] = '\0';
-	}
+	if (*command != '\n')
+		{
+	clean_newline(command);
+	tokenized = malloc(sizeof(char *) * 10);
 	MAX = parser(command, tokenized, " ");
 	/*Check for EOF*/
-	if (feof(stdin) || (_strcmp(tokenized[0], "exit") == 0))
+	if ((_strcmp(tokenized[0], "exit") == 0))
 	{
 	if (MAX >= 2)
 		status = _atoi(tokenized[1]);
@@ -46,7 +43,8 @@ int main(int ac, char **av, char **env)
 	/*execute command*/
 	if ((conditions(tokenized, env)) != 0)
 		executer(tokenized);
-	_free_tok(tokenized, MAX);
+_free_tok(tokenized, MAX);
+		}
 	}
 	free(command);
 	return (0);
@@ -57,15 +55,18 @@ int main(int ac, char **av, char **env)
  * @MAX: number of pointer in the array that allocated
  * Return: void
  */
-void _free_tok(char *tokenized[MAX_ARGS], int MAX)
+void _free_tok(char **tokenized, int MAX)
 {
 	int x;
 
-	for (x = 0; x <= MAX; x++)
+	for (x = 0; x < 10; x++)
 	{
-	if (tokenized[x])
-		free(tokenized[x]);
+		if (x <= MAX)
+			free(tokenized[x]);
+		tokenized[x] = NULL;
 	}
+	free(tokenized);
+	tokenized = NULL;
 }
 /**
  * my_exit - exit the program when exit command passed
@@ -75,4 +76,19 @@ void _free_tok(char *tokenized[MAX_ARGS], int MAX)
 void my_exit(int status)
 {
 	exit(status);
+}
+/**
+ * clean_newline - clean '\n' char from command
+ * @command: is the getline str
+ * Return: void
+ */
+void clean_newline(char *command)
+{
+	size_t command_length = 0;
+
+	command_length = _strlen(command);
+	if (command_length > 0 && command[command_length - 1] == '\n')
+	{
+	command[command_length - 1] = '\0';
+	}
 }
