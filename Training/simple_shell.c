@@ -11,7 +11,10 @@ int main(void)
 
 	while (1)
 	{
+	if (isatty(STDIN_FILENO))
+	{
 	printer("simple_shell$ ");
+	}
 	/*get argument from stdin to command*/
 	if (getline(&command, &len, stdin) == -1)
 	{
