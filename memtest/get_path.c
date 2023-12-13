@@ -1,4 +1,5 @@
 #include "shell.h"
+void free_result(char **result);
 /**
  * get_path - recive tokenized "PATH" and check path exist and return it
  * @file: the string to contacenate on path or file name
@@ -18,6 +19,7 @@ char *get_path(char *file)
 	{
 	perror("Error in getenv");
 	}
+	path = _strdup(path);
 	tok_copy = add_command(path, file);
 	free(path);
 	if (tok_copy != NULL)
@@ -50,7 +52,7 @@ char *add_command(char *path, char *file)
 	while (token)
 	{
 	result[x] = malloc(_strlen(token) + _strlen(file) + 2);
-		if (result == NULL)
+		if (result[x] == NULL)
 		{
 		perror("Malloc Error");
 		exit(97);
@@ -63,20 +65,27 @@ char *add_command(char *path, char *file)
 		{
 		free(path_c);
 		result_c = _strdup(result[x]);
-		for (x = 0; result[x]; x++)
-		{
-		free(result[x]);
-		}
-		free(result);
+		free_result(result);
 		return (result_c);
 		}
 	x++;
 	}
 	free(path_c);
+	free_result(result);
+	return (NULL);
+}
+/**
+ * free_result - free the pointer result
+ * @result: is the pointer
+ * Return: void
+ */
+void free_result(char **result)
+{
+	int x = 0;
+
 	for (x = 0; result[x]; x++)
 	{
 	free(result[x]);
 	}
 	free(result);
-	return (NULL);
 }

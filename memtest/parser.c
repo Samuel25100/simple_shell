@@ -15,6 +15,11 @@ int parser(char *command, char *args[MAX_ARGS], char *delim)
 	while (token != NULL)
 	{
 	args[argc] = malloc((_strlen(token)) + 1);
+	if (args[argc] == NULL)
+	{
+	perror("Malloc error");
+	exit(97);
+	}
 	_memset(args[argc], 0, ((_strlen(token)) + 1));
 	_strcpy(args[argc], token);
 	token = strtok(NULL, delim);
