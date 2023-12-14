@@ -11,7 +11,6 @@ void executer(char **tokenized, char **env)
 	char *ab_path = NULL;
 	int bin = 0;
 
-	(void)env;
 	/*path is checked if it exist and executable by get_path, else return NULL*/
 	if (tokenized[0][0] == '/' || tokenized[0][0] == '.')
 	{
@@ -31,7 +30,8 @@ void executer(char **tokenized, char **env)
 	/*Fork create child process with return 0*/
 	if (pid == 0)
 	{
-	execve(ab_path, tokenized, NULL);
+	if(execve(ab_path, tokenized, env) == -1)
+		exit(2);
 	}
 	else if (pid > 0)
 	{
