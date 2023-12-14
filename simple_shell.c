@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env)
 	if (*command != '\n' && *command != ' ')
 		{
 	clean_newline(command);
-	tokenized = malloc(sizeof(char *) * 10);
+	tokenized = my_calloc(10, sizeof(char *));
 	MAX = parser(command, tokenized, " ");
 	if ((_strcmp(tokenized[0], "exit") == 0))
 	{
@@ -74,7 +74,7 @@ void _free_tok(char **tokenized, int MAX)
  */
 void my_exit(int status, char **tokenized)
 {
-	if(status >= 0)
+	if (status >= 0)
 		exit(status);
 	else
 	{

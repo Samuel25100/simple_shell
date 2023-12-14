@@ -8,7 +8,7 @@
 void *my_calloc(size_t num_el, size_t size_el)
 {
 	size_t tot = num_el * size_el;
-	void* ptr = NULL;
+	void *ptr = NULL;
 
 	if (num_el != 0 && tot / num_el != size_el)
 	{
