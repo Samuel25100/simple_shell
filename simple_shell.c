@@ -19,7 +19,7 @@ int main(int ac, char **av, char **env)
 	{
 	if (isatty(STDIN_FILENO))
 		printer("hell($) ");
-	if (getline(&command, &len, stdin) == -1)
+	if (_getline(&command, &len, stdin) == -1)
 	{
 		free(command);
 		if (isatty(STDIN_FILENO))

@@ -26,7 +26,7 @@ int conditions(char **command, char **env);
 int _strcmp(char *s1, char *s2);
 char *add_command(char *path, char *token);
 void my_env(char **env);
-void my_exit(int status, char **tokenized);
+void my_exit(int status, char **av);
 void print_error(char **tokenized, char *err);
 void _memset(char *str, int fill, int size);
 int _atoi(char *s);
@@ -34,4 +34,5 @@ void _free_tok(char **tokenized, int MAX);
 void clean_newline(char *command);
 char *_strtok(char *str, const char *delimiters);
 void *my_calloc(size_t num_el, size_t size_el);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 #endif
