@@ -11,61 +11,61 @@
 
 ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
-        char buffer[MAX_BUFFER_SIZE];
-        ssize_t total_bytes = 0;
-        ssize_t bytes_read;
+	char buffer[MAX_BUFFER_SIZE];
+	ssize_t total_bytes = 0;
+	ssize_t bytes_read;
 
-        char *line = *lineptr;
-        size_t line_size = *n;
-        size_t line_index = 0;
+	char *line = *lineptr;
+	size_t line_size = *n;
+	size_t line_index = 0;
 
-        while (1)
-        {
-                if (line_index >= line_size - 1)
-                {
-                        break;
-                }
+	while (1)
+	{
+	if (line_index >= line_size - 1)
+		{
+			break;
+		}
 
-        bytes_read = read(fd, buffer, sizeof(buffer));
+	bytes_read = read(fd, buffer, sizeof(buffer));
 
-        if (bytes_read == -1)
-        {
-        return (-1);
-        }
-        if (bytes_read == 0)
-        {
-                break;
-        }
+	if (bytes_read == -1)
+	{
+	return (-1);
+	}
+	if (bytes_read == 0)
+	{
+		break;
+	}
 
-        for (ssize_t i = 0; i < bytes_read; i++)
-        {
-        char current_char = buffer[i];
+	for (ssize_t i = 0; i < bytes_read; i++)
+	{
+	char current_char = buffer[i];
 
-        line[line_index++] = current_char;
+	line[line_index++] = current_char;
 
-        if (current_char == '\n')
-        {
-        total_bytes += line_index;
-        return (total_bytes);
-        }
+	if (current_char == '\n')
+	{
+	total_bytes += line_index;
+	return (total_bytes);
+	}
 
-        if (line_index >= line_size - 1)
-        {
-                break;
-        }
-        }
+	if (line_index >= line_size - 1)
+	{
+		break;
+	}
+	}
 
-        total_bytes += bytes_read;
-        }
+	total_bytes += bytes_read;
+	}
 
-        if (line_index == 0)
-        {
-        return (-1);
-        }
+	if (line_index == 0)
+	{
+	return (-1);
+	}
 
-        line[line_index] = '\0';
-        total_bytes += line_index;
-        return (total_bytes);
+	line[line_index] = '\0';
+	total_bytes += line_index;
+	return (total_bytes);
 }
 
 /**
@@ -74,23 +74,23 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
  * Return: 0 on success
  */
 
-        int main(void)
+	int main(void)
 {
-        char *line = malloc(MAX_BUFFER_SIZE);
-        size_t line_size = MAX_BUFFER_SIZE;
-        ssize_t line_length;
+	char *line = malloc(MAX_BUFFER_SIZE);
+	size_t line_size = MAX_BUFFER_SIZE;
+	ssize_t line_length;
 
-        while ((line_length = _getline(&line, &line_size, STDIN_FILENO)) != -1)
-        {
+	while ((line_length = _getline(&line, &line_size, STDIN_FILENO)) != -1)
+	{
 
-        write(STDOUT_FILENO, "You entered: ", 13);
-        write(STDOUT_FILENO, line, line_length);
+	write(STDOUT_FILENO, "You entered: ", 13);
+	write(STDOUT_FILENO, line, line_length);
 
-        line[0] = '\0';
-        line_length = 0;
-        }
+	line[0] = '\0';
+	line_length = 0;
+	}
 
-        free(line);
+	free(line);
 
-        return (0);
+	return (0);
 }
