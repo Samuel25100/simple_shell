@@ -1,84 +1,96 @@
 #include "shell.h"
 
 /**
- * _bringline - assigns the line var for get_line
- * @lineptr: Buffer that store the input str
- * @buffer: str that is been called to line
- * @n: size of line
- * @j: size of buffer
+ * _getline - Read a line from a file descriptor
+ * @lineptr: Pointer to the line buffer
+ * @n: Pointer to the size of the line buffer
+ * @fd: File descriptor to read from
+ *
+ * Return: Length of the read line, or -1 on error or end of file
  */
-void _bringline(char **lineptr, size_t *n, char *buffer, size_t j)
+
+ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
+        char buffer[MAX_BUFFER_SIZE];
+        ssize_t total_bytes = 0;
+        ssize_t bytes_read;
 
-	if (*lineptr == NULL)
-	{
-		if  (j > BUFSIZE)
-			*n = j;
+        char *line = *lineptr;
+        size_t line_size = *n;
+        size_t line_index = 0;
 
-		else
-			*n = BUFSIZE;
-		*lineptr = buffer;
-	}
-	else if (*n < j)
-	{
-		if (j > BUFSIZE)
-			*n = j;
-		else
-			*n = BUFSIZE;
-		*lineptr = buffer;
-	}
-	else
-	{
-		_strcpy(*lineptr, buffer);
-		free(buffer);
-	}
+        while (1)
+        {
+                if (line_index >= line_size - 1)
+                {
+                        break;
+                }
+
+        bytes_read = read(fd, buffer, sizeof(buffer));
+
+        if (bytes_read == -1)
+        {
+        return (-1);
+        }
+        if (bytes_read == 0)
+        {
+                break;
+        }
+
+        for (ssize_t i = 0; i < bytes_read; i++)
+        {
+        char current_char = buffer[i];
+
+        line[line_index++] = current_char;
+
+        if (current_char == '\n')
+        {
+        total_bytes += line_index;
+        return (total_bytes);
+        }
+
+        if (line_index >= line_size - 1)
+        {
+                break;
+        }
+        }
+
+        total_bytes += bytes_read;
+        }
+
+        if (line_index == 0)
+        {
+        return (-1);
+        }
+
+        line[line_index] = '\0';
+        total_bytes += line_index;
+        return (total_bytes);
 }
+
 /**
- * _getline - Read inpt from stream
- * @lineptr: buffer that stores the input
- * @n: size of lineptr
- * @stream: stream to read from
- * Return: The number of bytes
+ * main - Entry point of the program
+ *
+ * Return: 0 on success
  */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+
+        int main(void)
 {
-	int i;
-	static ssize_t input;
-	ssize_t retval;
-	char *buffer;
-	char t = 'z';
+        char *line = malloc(MAX_BUFFER_SIZE);
+        size_t line_size = MAX_BUFFER_SIZE;
+        ssize_t line_length;
 
-	if (input == 0)
-		fflush(stream);
-	else
-		return (-1);
-	input = 0;
+        while ((line_length = _getline(&line, &line_size, STDIN_FILENO)) != -1)
+        {
 
-	buffer = malloc(sizeof(char) * BUFSIZE);
-	if (buffer == 0)
-		return (-1);
-	while (t != '\n')
-	{
-		i = read(STDIN_FILENO, &t, 1);
-		if (i == -1 || (i == 0 && input == 0))
-		{
-			free(buffer);
-			return (-1);
-		}
-		if (i == 0 && input != 0)
-		{
-			input++;
-			break;
-		}
-		if (input >= BUFSIZE)
-			buffer = _realloc(buffer, input, input + 1);
-		buffer[input] = t;
-		input++;
-	}
-	buffer[input] = '\0';
-	_bringline(lineptr, n, buffer, input);
-	retval = input;
-	if (i != 0)
-		input = 0;
-	return (retval);
+        write(STDOUT_FILENO, "You entered: ", 13);
+        write(STDOUT_FILENO, line, line_length);
+
+        line[0] = '\0';
+        line_length = 0;
+        }
+
+        free(line);
+
+        return (0);
 }
