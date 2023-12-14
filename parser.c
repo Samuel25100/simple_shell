@@ -32,7 +32,7 @@ void _memset(char *str, int fill, int size)
 {
 	int x = 0;
 
-	for (x = 0; x < size && str[x]; x++)
+	for (x = 0; x < size; x++)
 	{
 	str[x] = (unsigned char)fill;
 	}
