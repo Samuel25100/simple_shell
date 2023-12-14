@@ -5,11 +5,11 @@
  * @err: the string of error message
  * Return: void
  */
-void print_error(char *tokenized[MAX_ARGS], char *err)
+void print_error(char **tokenized, char *err)
 {
 	int count = 0;
 
-	while (tokenized[count])
+	while (tokenized[count] != NULL)
 	{
 	count++;
 	}

@@ -14,7 +14,7 @@ int main(int ac, char **av, char **env)
 	char **tokenized = {NULL};
 
 	(void)ac;
-	(void)av;
+	/*(void)av;*/
 	while (1)
 	{
 	if (isatty(STDIN_FILENO))
@@ -37,7 +37,7 @@ int main(int ac, char **av, char **env)
 		status = _atoi(tokenized[1]);
 	free(command);
 	_free_tok(tokenized, MAX);
-	my_exit(status);
+	my_exit(status, av);
 	}
 	if ((conditions(tokenized, env)) != 0)
 		executer(tokenized, env);
@@ -69,11 +69,18 @@ void _free_tok(char **tokenized, int MAX)
 /**
  * my_exit - exit the program when exit command passed
  * @status: is the status of the program when it exit
+ * @tokenized: token of all command
  * Return: void
  */
-void my_exit(int status)
+void my_exit(int status, char **tokenized)
 {
-	exit(status);
+	if(status >= 0)
+		exit(status);
+	else
+	{
+	print_error(tokenized, "Illegal number");
+	exit(2);
+	}
 }
 /**
  * clean_newline - clean '\n' char from command
