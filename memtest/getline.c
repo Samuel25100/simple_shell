@@ -1,56 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_LINE_LENGTH 1024
+
 /**
- * _getline - Read a line of input from the user
+ * _getline - Read a line from a file or standard input
+ * @lineptr: Pointer to the buffer where the line will be stored
+ * @n: Pointer to the size of the buffer
+ * @stream: File stream to read from
  *
- * Return: Pointer to the input line, or NULL on failure
+ * Return: The number of characters read, or -1 on failure or end of file
  */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+{
+	if (lineptr == NULL || n == NULL || stream == NULL)
+		return (-1); /* Invalid arguments */
 
-char *_getline() {
-    char *line = NULL;
-    size_t line_size = 0;
-    ssize_t chars_read;
-    size_t current_size = 0;
+	char *buffer = malloc(MAX_LINE_LENGTH);
 
-    while ((chars_read = getline(&line, &line_size, stdin)) != -1) {
-        current_size += chars_read;
+	if (buffer == NULL)
+		return (-1); /* Memory allocation failed */
 
-        // Check if the line is complete (ends with a newline)
-        if (line[chars_read - 1] == '\n') {
-            // Remove the newline character
-            line[chars_read - 1] = '\0';
-            break;
-        }
+	size_t i = 0;
+	int c;
 
-        // Resize the buffer to accommodate more input
-        char *temp = realloc(line, current_size + line_size);
-        if (temp == NULL) {
-            fprintf(stderr, "Memory reallocation failed\n");
-            free(line);
-            return NULL;
-        }
-        line = temp;
-    }
+	while ((c = fgetc(stream)) != EOF && c != '\n')
+	{
+		if (i < MAX_LINE_LENGTH - 1)
+			buffer[i++] = c;
+		else
+		{
+			/* Line exceeds buffer size, handle error or truncate line */
+		}
+	}
 
-    return line;
+	buffer[i] = '\0'; /* Null-terminate the string */
+
+	if (i == 0 && c == EOF)
+	{
+		free(buffer);
+		return (-1); /* No characters read, end of file reached */
+	}
+
+	*lineptr = buffer;
+	*n = i + 1; /* Include space for the null terminator */
+
+	return (i); /* Return the number of characters read */
 }
 
 /**
- * main - Entry point
+ * main - Entry point of the program
  *
- * Return: Always 0
+ * Return: 0 on success
  */
 
-int main() {
-    printf("Enter a line: ");
-    fflush(stdout);
+int main(void)
+{
+	char *line = NULL;
+	size_t size = 0;
+	ssize_t length;
 
-    char *line = _getline();
-    if (line != NULL) {
-        printf("Input: %s\n", line);
-        free(line);
-    }
+	printf("Enter a line of text: ");
+	length = _getline(&line, &size, stdin);
 
-    return 0;
+	if (length != -1)
+	{
+		printf("Line: %s\n", line);
+		printf("Length: %zd\n", length);
+	}
+	else
+	{
+		printf("Error reading line.\n");
+	}
+
+	free(line);
+
+	return (0);
 }
