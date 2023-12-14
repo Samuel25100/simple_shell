@@ -1,51 +1,74 @@
-#include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 
-#define MAX_LINE_LENGTH 1024
+#define MAX_BUFFER_SIZE 1024
 
 /**
- * _getline - Read a line from a file or standard input
- * @lineptr: Pointer to the buffer where the line will be stored
- * @n: Pointer to the size of the buffer
- * @stream: File stream to read from
+ * _getline - Read a line from a file descriptor
+ * @lineptr: Pointer to the line buffer
+ * @n: Pointer to the size of the line buffer
+ * @fd: File descriptor to read from
  *
- * Return: The number of characters read, or -1 on failure or end of file
+ * Return: Length of the read line, or -1 on error or end of file
  */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+
+ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
-	if (lineptr == NULL || n == NULL || stream == NULL)
-		return (-1); /* Invalid arguments */
+	char buffer[MAX_BUFFER_SIZE];
+	ssize_t total_bytes = 0;
+	ssize_t bytes_read;
 
-	char *buffer = malloc(MAX_LINE_LENGTH);
+	char *line = *lineptr;
+	size_t line_size = *n;
+	size_t line_index = 0;
 
-	if (buffer == NULL)
-		return (-1); /* Memory allocation failed */
-
-	size_t i = 0;
-	int c;
-
-	while ((c = fgetc(stream)) != EOF && c != '\n')
+	while (1)
 	{
-		if (i < MAX_LINE_LENGTH - 1)
-			buffer[i++] = c;
-		else
+		if (line_index >= line_size - 1)
 		{
-			/* Line exceeds buffer size, handle error or truncate line */
+			break;
 		}
-	}
 
-	buffer[i] = '\0'; /* Null-terminate the string */
+	bytes_read = read(fd, buffer, sizeof(buffer));
 
-	if (i == 0 && c == EOF)
+	if (bytes_read == -1)
 	{
-		free(buffer);
-		return (-1); /* No characters read, end of file reached */
+	return (-1);
+	}
+	if (bytes_read == 0)
+	{
+		break;
 	}
 
-	*lineptr = buffer;
-	*n = i + 1; /* Include space for the null terminator */
+	for (ssize_t i = 0; i < bytes_read; i++)
+	{
+	char current_char = buffer[i];
 
-	return (i); /* Return the number of characters read */
+	line[line_index++] = current_char;
+
+	if (current_char == '\n')
+	{
+	total_bytes += line_index;
+	return (total_bytes);
+	}
+
+	if (line_index >= line_size - 1)
+	{
+		break;
+	}
+	}
+
+	total_bytes += bytes_read;
+	}
+
+	if (line_index == 0)
+	{
+	return (-1);
+	}
+
+	line[line_index] = '\0';
+	total_bytes += line_index;
+	return (total_bytes);
 }
 
 /**
@@ -54,23 +77,20 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
  * Return: 0 on success
  */
 
-int main(void)
+	int main(void)
 {
-	char *line = NULL;
-	size_t size = 0;
-	ssize_t length;
+	char *line = malloc(MAX_BUFFER_SIZE);
+	size_t line_size = MAX_BUFFER_SIZE;
+	ssize_t line_length;
 
-	printf("Enter a line of text: ");
-	length = _getline(&line, &size, stdin);
+	while ((line_length = _getline(&line, &line_size, STDIN_FILENO)) != -1)
+	{
 
-	if (length != -1)
-	{
-		printf("Line: %s\n", line);
-		printf("Length: %zd\n", length);
-	}
-	else
-	{
-		printf("Error reading line.\n");
+	write(STDOUT_FILENO, "You entered: ", 13);
+	write(STDOUT_FILENO, line, line_length);
+
+	line[0] = '\0';
+	line_length = 0;
 	}
 
 	free(line);
