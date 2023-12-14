@@ -18,7 +18,7 @@ char *_strdup(char *str);
 int _putchar(char c);
 int printer(char *str);
 int parser(char *str, char **args, char *delim);
-void executer(char **tokenized);
+void executer(char **tokenized, char **env);
 char *get_path(char *file);
 char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);

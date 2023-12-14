@@ -2,9 +2,10 @@
 /**
  * executer - recieve tokenized argument and excute them from PATH file
  * @tokenized: the tokenized array of arguments
+ * @env: array of all enviroment
  * Return: -1 on error and 0 on success
  */
-void executer(char **tokenized)
+void executer(char **tokenized, char **env)
 {
 	pid_t pid = 0;
 	char *ab_path = NULL;
@@ -29,7 +30,7 @@ void executer(char **tokenized)
 	/*Fork create child process with return 0*/
 	if (pid == 0)
 	{
-	execve(ab_path, tokenized, NULL);
+	execve(ab_path, tokenized, env);
 	}
 	else if (pid > 0)
 	{

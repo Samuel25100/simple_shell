@@ -48,7 +48,7 @@ char *add_command(char *path, char *file)
 
 	while (token)
 	{
-	result[x] = malloc(_strlen(token) + _strlen(file) + 2);
+	result[x] = calloc((_strlen(token) + _strlen(file) + 2),sizeof(char));
 		if (result[x] == NULL)
 		{
 		perror("Malloc Error");

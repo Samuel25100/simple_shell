@@ -17,21 +17,20 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	while (1)
 	{
-	printer("hell($) ");
-	/*get argument from stdin to command*/
+	if (isatty(STDIN_FILENO))
+		printer("hell($) ");
 	if (getline(&command, &len, stdin) == -1)
 	{
 		free(command);
-		_putchar('\n');
+		if (isatty(STDIN_FILENO))
+			_putchar('\n');
 		exit(0);
 	}
-	/*tokenize arguments*/
 	if (*command != '\n')
 		{
 	clean_newline(command);
 	tokenized = malloc(sizeof(char *) * 10);
 	MAX = parser(command, tokenized, " ");
-	/*Check for EOF*/
 	if ((_strcmp(tokenized[0], "exit") == 0))
 	{
 	if (MAX >= 2)
@@ -40,9 +39,8 @@ int main(int ac, char **av, char **env)
 	_free_tok(tokenized, MAX);
 	my_exit(status);
 	}
-	/*execute command*/
 	if ((conditions(tokenized, env)) != 0)
-		executer(tokenized);
+		executer(tokenized, env);
 _free_tok(tokenized, MAX);
 		}
 	}
