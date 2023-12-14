@@ -26,7 +26,7 @@ int main(int ac, char **av, char **env)
 			_putchar('\n');
 		exit(0);
 	}
-	if (*command != '\n')
+	if (*command != '\n' && *command != ' ')
 		{
 	clean_newline(command);
 	tokenized = malloc(sizeof(char *) * 10);
