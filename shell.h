@@ -34,5 +34,9 @@ void _free_tok(char **tokenized, int MAX);
 void clean_newline(char *command);
 char *_strtok(char *str, const char *delimiters);
 void *my_calloc(size_t num_el, size_t size_el);
+void _bringline(char **lineptr, size_t *n, char *buffer, size_t j);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+void _memcpy(void *newptr, const void *ptr, unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 #endif

@@ -1,43 +1,84 @@
 #include "shell.h"
+
 /**
- * _getline - Read a line from a file or standard input
- * @lineptr: Pointer to the buffer where the line will be stored
- * @n: Pointer to the size of the buffer
- * @stream: File stream to read from
- *
- * Return: The number of characters read, or -1 on failure or end of file
+ * _bringline - assigns the line var for get_line
+ * @lineptr: Buffer that store the input str
+ * @buffer: str that is been called to line
+ * @n: size of line
+ * @j: size of buffer
+ */
+void _bringline(char **lineptr, size_t *n, char *buffer, size_t j)
+{
+
+	if (*lineptr == NULL)
+	{
+		if  (j > BUFSIZE)
+			*n = j;
+
+		else
+			*n = BUFSIZE;
+		*lineptr = buffer;
+	}
+	else if (*n < j)
+	{
+		if (j > BUFSIZE)
+			*n = j;
+		else
+			*n = BUFSIZE;
+		*lineptr = buffer;
+	}
+	else
+	{
+		_strcpy(*lineptr, buffer);
+		free(buffer);
+	}
+}
+/**
+ * _getline - Read inpt from stream
+ * @lineptr: buffer that stores the input
+ * @n: size of lineptr
+ * @stream: stream to read from
+ * Return: The number of bytes
  */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	char *buffer = NULL;
-	size_t i = 0;
-	int c = 0;
+	int i;
+	static ssize_t input;
+	ssize_t retval;
+	char *buffer;
+	char t = 'z';
 
-	if (lineptr == NULL || n == NULL || stream == NULL)
-		return (-1); /* Invalid arguments */
+	if (input == 0)
+		fflush(stream);
+	else
+		return (-1);
+	input = 0;
 
-	buffer = my_calloc(1024, sizeof(char));
-	if (buffer == NULL)
-		return (-1); /* Memory allocation failed */
-	while ((c = fgetc(stream)) != EOF && c != '\n')
+	buffer = malloc(sizeof(char) * BUFSIZE);
+	if (buffer == 0)
+		return (-1);
+	while (t != '\n')
 	{
-		if (i < (1024 - 1))
-			buffer[i++] = c;
-		else
+		i = read(STDIN_FILENO, &t, 1);
+		if (i == -1 || (i == 0 && input == 0))
 		{
-		return (-1); /* Line exceeds buffer size, handle error or truncate line */
+			free(buffer);
+			return (-1);
 		}
+		if (i == 0 && input != 0)
+		{
+			input++;
+			break;
+		}
+		if (input >= BUFSIZE)
+			buffer = _realloc(buffer, input, input + 1);
+		buffer[input] = t;
+		input++;
 	}
-
-	buffer[i] = '\0'; /* Null-terminate the string */
-	if (i == 0 && c == EOF)
-	{
-		free(buffer);
-		return (-1); /* No characters read, end of file reached */
-	}
-
-	*lineptr = buffer;
-	*n = i + 1; /* Include space for the null terminator */
-
-	return (i); /* Return the number of characters read */
+	buffer[input] = '\0';
+	_bringline(lineptr, n, buffer, input);
+	retval = input;
+	if (i != 0)
+		input = 0;
+	return (retval);
 }
