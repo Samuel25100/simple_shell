@@ -17,7 +17,7 @@ char *_strdup(char *str)
 
 	len = _strlen(str);
 
-	dup = malloc(sizeof(char) * (len + 1));
+	dup = my_calloc((len + 1), sizeof(char));
 	if (dup == NULL)
 	{
 	perror("Memory allocation for _strdup failer");

@@ -39,7 +39,7 @@ char *add_command(char *path, char *file)
 
 	path_c = _strdup(path);
 	token = _strtok(path_c, ":");
-	result = my_calloc(25,sizeof(char *));
+	result = my_calloc(25, sizeof(char *));
 	if (result == NULL)
 	{
 	perror("Malloc Error");
@@ -48,7 +48,7 @@ char *add_command(char *path, char *file)
 
 	while (token)
 	{
-	result[x] = my_calloc((_strlen(token) + _strlen(file) + 2),sizeof(char));
+	result[x] = my_calloc((_strlen(token) + _strlen(file) + 2), sizeof(char));
 		if (result[x] == NULL)
 		{
 		perror("Malloc Error");
