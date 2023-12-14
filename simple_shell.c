@@ -14,12 +14,11 @@ int main(int ac, char **av, char **env)
 	char **tokenized = {NULL};
 
 	(void)ac;
-	/*(void)av;*/
 	while (1)
 	{
 	if (isatty(STDIN_FILENO))
 		printer("hell($) ");
-	if (_getline(&command, &len, stdin) == -1)
+	if (getline(&command, &len, stdin) == -1)
 	{
 		free(command);
 		if (isatty(STDIN_FILENO))
