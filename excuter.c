@@ -12,7 +12,7 @@ void executer(char **tokenized, char **env)
 	int bin = 0;
 
 	/*path is checked if it exist and executable by get_path, else return NULL*/
-	if (tokenized[0][0] == '/')
+	if (tokenized[0][0] == '/' || tokenized[0][0] == '.')
 	{
 		ab_path = tokenized[0];
 		bin = 1;
