@@ -34,5 +34,5 @@ void _free_tok(char **tokenized, int MAX);
 void clean_newline(char *command);
 char *_strtok(char *str, const char *delimiters);
 void *my_calloc(size_t num_el, size_t size_el);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+ssize_t _getline(char **lineptr, size_t *n, int fd);
 #endif
