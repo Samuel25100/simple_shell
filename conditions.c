@@ -17,6 +17,10 @@ int conditions(char *tokenized[MAX_ARGS], char **env)
 	/*my_exit();*/
 	return (0);
 	}
+	else if (_strcmp(tokenized[0], "setenv") == 0)
+	{
+	return (0);
+	}
 	return (1);
 }
 /**

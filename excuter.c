@@ -28,7 +28,7 @@ void executer(char **tokenized, char **env)
 	pid = fork();
 	}
 	/*Fork create child process with return 0*/
-	if (pid == 0)
+	if (pid == 0 && ab_path != NULL)
 	{
 	if (execve(ab_path, tokenized, env) == -1)
 		exit(2);
